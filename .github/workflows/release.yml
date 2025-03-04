@@ -1,0 +1,39 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'  # 匹配 x.x.x 格式的标签
+
+jobs:
+  build:
+    name: Create Release and Upload Asset
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 需要写入权限来创建 release
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Get the version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        
+      - name: Create ZIP package
+        run: |
+          mkdir -p release-package
+          cp -r plugins resources metadata.json release-package/
+          cd release-package
+          zip -r ../Fabrication-Toolkit-Zh-${{ steps.get_version.outputs.VERSION }}.zip ./*
+          cd ..
+          
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          files: Fabrication-Toolkit-Zh-${{ steps.get_version.outputs.VERSION }}.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
