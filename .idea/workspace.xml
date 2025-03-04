@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="81624dc4-41ca-48ac-93b8-92da00936c57" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/plugins/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/plugin.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/plugin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/result_event.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/thread.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/thread.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/KiCadJLCplugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KiCadJLCplugin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/attributes.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/attributes.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/fabrication.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/fabrication.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/mpn.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/mpn.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/options.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/options.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/position.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/position.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/rotation.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/rotation.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/process.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,15 +25,36 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
   <component name="ProjectId" id="2C7tSUh2zYdb8tYB6kgwqDOifTc" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/08607/Project/Fabrication-Toolkit-Zh"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\08607\Project\Fabrication-Toolkit-Zh" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-14705d77f0bb-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.25659.43" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

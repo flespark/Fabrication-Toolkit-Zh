@@ -235,8 +235,8 @@ class ProcessManager:
                 insert = True
                 for component in self.bom:
                     same_footprint = component['Footprint'] == self._normalize_footprint_name(footprint_name)
-                    same_value = component['Value'].upper() == footprint.GetValue().upper()
-                    same_lcsc = component['LCSC Part #'] == self._get_mpn_from_footprint(footprint)
+                    same_value = component['Comment'].upper() == footprint.GetValue().upper()
+                    same_lcsc = component['嘉立创元件编号'] == self._get_mpn_from_footprint(footprint)
                     under_limit = component['Quantity'] < bomRowLimit
 
                     if same_footprint and same_value and same_lcsc and under_limit:
@@ -251,9 +251,9 @@ class ProcessManager:
                         'Designator': "{}{}{}".format(footprint.GetReference().upper(), "" if unique_id == "" else "_", unique_id),
                         'Footprint': self._normalize_footprint_name(footprint_name),
                         'Quantity': 1,
-                        'Value': footprint.GetValue(),
+                        'Comment': footprint.GetValue(),
                         # 'Mount': mount_type,
-                        'LCSC Part #': self._get_mpn_from_footprint(footprint),
+                        '嘉立创元件编号': self._get_mpn_from_footprint(footprint),
                     })
 
     def generate_positions(self, temp_dir):
@@ -405,7 +405,7 @@ class ProcessManager:
         return (0.0, 0.0)
 
     def _get_mpn_from_footprint(self, footprint) -> str:
-        ''''Get the MPN/LCSC stock code from standard symbol fields.'''
+        '''Get the MPN/LCSC stock code from standard symbol fields.'''
         keys = ['LCSC Part #', 'LCSC Part', 'JLCPCB Part #', 'JLCPCB Part']
         fallback_keys = ['LCSC', 'JLC', 'MPN', 'Mpn', 'mpn']
 

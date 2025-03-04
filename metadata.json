@@ -1,6 +1,6 @@
 {
     "$schema": "https://go.kicad.org/pcm/schemas/v1",
-    "name": "Fabrication Toolkit",
+    "name": "Fabrication Toolkit Zh",
     "description": "JLC PCB fabrication toolkit",
     "description_full": "Toolkit for automating PCB fabrication process with KiCad and JLC PCB. \n\n Features: \n\u2022 Generates gerber files in correct format for production. \n\u2022 Generates BOM file in correct format for production. \n\u2022 Generates Pick and Place file in correct format for assembly. \n\u2022 Automatic and manual component translations. \n\u2022 Many more unique additional features. \n\u2665 https://github.com/sponsors/bennymeg",
     "identifier": "com.github.bennymeg.JLC-Plugin-for-KiCad",
