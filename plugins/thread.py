@@ -39,6 +39,30 @@ class ProcessThread(Thread):
         self.openBrowser = openBrowser
         self.start()
 
+    def expandTextVariables(self, string):
+        titleBlock = pcbnew.GetBoard().GetTitleBlock()
+        
+        titleBlockVars = {
+            "ISSUE_DATE": titleBlock.GetDate(),
+            "CURRENT_DATE": datetime.datetime.now().strftime('%Y-%m-%d'),
+            "REVISION": titleBlock.GetRevision(),
+            "TITLE": titleBlock.GetTitle(),
+            "COMPANY": titleBlock.GetCompany(),
+        }
+
+        for comment_index in range(9):
+            titleBlockVars[f"COMMENT{comment_index + 1}"] = titleBlock.GetComment(comment_index)
+
+        for var, val in titleBlockVars.items():
+            string = string.replace(f"${{{var}}}", val)
+
+        if (hasattr(self.process_manager.board, "GetProject") and hasattr(pcbnew, "ExpandTextVars")):
+            project = self.process_manager.board.GetProject()
+            string = pcbnew.ExpandTextVars(string, project)
+
+        return string
+
+
     def run(self):
         # initializing
         self.progress(0)
@@ -128,11 +152,16 @@ class ProcessThread(Thread):
             os.makedirs(output_path)
         
         # rename gerber archive
-        gerberArchiveName = ProcessManager.normalize_filename("_".join(("{} {}".format(title or filename, revision or '').strip() + '.zip').split()))
+        if self.options[ARCHIVE_NAME]:
+            baseName = self.expandTextVariables(self.options[ARCHIVE_NAME])
+        else:
+            baseName = "{} {}".format(title or filename, revision or '')
+
+        gerberArchiveName = ProcessManager.normalize_filename("_".join((baseName.strip() + '.zip').split()))
         os.rename(temp_file, os.path.join(temp_dir, gerberArchiveName))
 
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
-        backup_name = ProcessManager.normalize_filename("_".join(("{} {} {}".format(title or filename, revision or '', timestamp).strip()).split()))
+        backup_name = ProcessManager.normalize_filename("_".join(("{} {}".format(baseName, timestamp).strip()).split()))
         shutil.make_archive(os.path.join(output_path, 'backups', backup_name), 'zip', temp_dir)
 
 

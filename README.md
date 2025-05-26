@@ -40,6 +40,8 @@
 
 <img src="./assets/options.png?raw=true" height=275>
 
+☑ __压缩包文件名__：导出的Gerber压缩包名字。可以包含字符变量，例如`${TITLE}_${REVISION}`</br>
+
 ☑ __附加层__：要包含在 Gerber 存档中的附加层的逗号分隔列表。</br>
 ☑ __将 User.1 设置为 V-Cut 层__：在生产中将 User.1 层与 Edge-Cut 层合并。</br>
 ☑ __使用 User.2 作为替代 Edge-Cut 层__：在生产中使用 User.2 而不是 Edge-Cut 层作为电路板轮廓。如果您在生产过程中需要处理边缘或拼板，但仍希望保留单个轮廓用于原型设计、3D 模型导出或类似目的，这将非常有用。</br>
@@ -53,8 +55,8 @@
 <img src="./assets/mpn.png?raw=true">
 
 #### 主要字段：
-| 'LCSC Part #' | 'LCSC Part' | 'JLCPCB Part #' | 'JLCPCB Part' |
-| ------------- | ----------- | --------------- | ------------- |
+| 'LCSC Part #' | 'LCSC Part' | 'LCSC PN' | 'LCSC P/N' | 'LCSC Part No.' | 'JLCPCB Part #' | 'JLCPCB Part' | 'JLCPCB PN' | 'JLCPCB P/N' | 'JLCPCB Part No.' |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 _字段将按上述顺序查询。_
 
@@ -199,6 +201,7 @@ python3 -m plugins.cli -h
   --autoFill, -f                            对所有区域应用自动填充
   --excludeDNP, -e                          从物料清单中移除 DNP 元器件
   --allActiveLayers, -aaL                   导出所有活动层而不仅仅是常用层
+  --archiveName NAME, -aN NAME              指定导出的Gerber压缩包名字
   --openBrowser, -b                         生成后打开带有目录文件概览的网页浏览器
 ```
 
