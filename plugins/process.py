@@ -12,7 +12,7 @@ from typing import Tuple
 
 # Interaction with KiCad.
 import pcbnew  # type: ignore
-from .utils import footprint_has_field, footprint_get_field, get_plot_plan
+from .utils import duplicate_footprint, footprint_has_field, footprint_get_field, footprint_to_degrees, get_plot_plan
 
 # Application definitions.
 from .config import *
@@ -32,6 +32,14 @@ class ProcessManager:
     def normalize_filename(filename):
         return re.sub(r'[^\w\s\.\-]', '', filename)
 
+    @staticmethod
+    def _format_coordinate(value, precision=6):
+        '''Round off floating-point residue and render as fixed-point (never scientific) notation.'''
+        value = round(value, precision)
+        if value == 0:
+            value = 0.0  # avoid "-0"
+        return f'{value:.{precision}f}'.rstrip('0').rstrip('.') or '0'
+
     def update_zone_fills(self):
         '''Verify all zones have up-to-date fills.'''
         filler = pcbnew.ZONE_FILLER(self.board)
@@ -47,6 +55,7 @@ class ProcessManager:
 
     def generate_gerber(self, temp_dir, extra_layers, extend_edge_cuts, alternative_edge_cuts, all_active_layers):
         '''Generate the Gerber files.'''
+        original_settings = self.board.GetDesignSettings()
         settings = self.board.GetDesignSettings()
         settings.m_SolderMaskMargin = 50000
         settings.m_SolderMaskToCopperClearance = 5000
@@ -77,7 +86,7 @@ class ProcessManager:
             extra_layers = []
 
         for layer_info in get_plot_plan(self.board):
-            if (self.board.IsLayerEnabled(layer_info[1]) and (all_active_layers or layer_info[1] in standardLayers)) or layer_info[0] in extra_layers:
+            if (self.board.IsLayerEnabled(layer_info[1]) and (all_active_layers or layer_info[1] in standardLayers)) or layer_info[2] in extra_layers:
                 plot_controller.SetLayer(layer_info[1])
                 plot_controller.OpenPlotfile(layer_info[2], pcbnew.PLOT_FORMAT_GERBER, layer_info[2])
 
@@ -98,6 +107,7 @@ class ProcessManager:
                     plot_controller.PlotLayer()
 
         plot_controller.ClosePlot()
+        settings = original_settings
 
     def generate_drills(self, temp_dir):
         '''Generate the drill file.'''
@@ -127,10 +137,11 @@ class ProcessManager:
         footprint_rotation = self._get_footprint_rotation(footprint)
         footprint_rotated = footprint_rotation % 90 != 0
 
-        # if the footprint is not rotated by a multiple of 90 degrees, the bounding boxes will be off, so we create a temporary copy that is rotated to 0
+        # if the footprint is not rotated by a multiple of 90 degrees, 
+        # the bounding boxes will be off, so we create a temporary copy that is rotated to 0
         if footprint_rotated:
-            footprint = footprint.Duplicate()
-            footprint.SetOrientationDegrees(0)
+            footprint = duplicate_footprint(footprint)
+            footprint_to_degrees(footprint)
 
         if origin_type == 'Anchor':
             position = footprint.GetPosition()
@@ -249,9 +260,9 @@ class ProcessManager:
 
                 self.components.append({
                     'Designator': designator,
-                    'Mid X': mid_x,
-                    'Mid Y': mid_y,
-                    'Rotation': rotation,
+                    'Mid X': self._format_coordinate(mid_x),
+                    'Mid Y': self._format_coordinate(mid_y),
+                    'Rotation': self._format_coordinate(rotation),
                     'Layer': layer,
                 })
 
@@ -458,7 +469,7 @@ class ProcessManager:
     def _get_mpn_from_footprint(self, footprint) -> str:
         ''''Get the MPN/LCSC stock code from standard symbol fields.'''
         supplier_names = ['LCSC', 'JLCPCB']
-        pn_abbrevs = ['Part #', 'Part', 'PN', 'P/N', 'Part No.']
+        pn_abbrevs = ['Part #', 'Part', 'PN', 'P/N', 'Part No.', 'Part Number']
         keys = [(sn + " " + abr) for sn in supplier_names for abr in pn_abbrevs]
         fallback_keys = ['LCSC', 'JLC', 'MPN', 'Mpn', 'mpn']
 
@@ -466,7 +477,7 @@ class ProcessManager:
             return 'DNP'
 
         for key in keys + fallback_keys:
-            if footprint_has_field(footprint, key):
+            if footprint_has_field(footprint, key) and '' != footprint_get_field(footprint, key):
                 return footprint_get_field(footprint, key)
 
     def _get_layer_override_from_footprint(self, footprint) -> str:

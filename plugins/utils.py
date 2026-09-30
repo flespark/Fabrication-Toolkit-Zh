@@ -21,6 +21,29 @@ def is_v7(version = get_version()):
 
 def is_v6(version = get_version()):
     return version >= 5.99 and version < 6.99
+
+def duplicate_footprint(footprint):
+    version = get_version()
+
+    if is_v10(version):
+        duplicate = footprint.Duplicate(False)
+    else:
+        duplicate = footprint.Duplicate()
+
+    # KiCad 10 SWIG returns the base BOARD_ITEM and removed the
+    # pcbnew.Cast_to_FOOTPRINT helper; downcast via the object's own
+    # .Cast() method instead. Older KiCads still ship Cast_to_FOOTPRINT.
+    if hasattr(pcbnew, 'Cast_to_FOOTPRINT'):
+        return pcbnew.Cast_to_FOOTPRINT(duplicate)
+    if hasattr(duplicate, 'Cast'):
+        return duplicate.Cast()
+    return duplicate
+
+def footprint_to_degrees(footprint):
+    if hasattr(footprint, 'SetOrientationDegrees'):
+        footprint.SetOrientationDegrees(0)
+    else:
+        footprint.SetOrientation(pcbnew.EDA_ANGLE(0, pcbnew.DEGREES_T))
                  
 def footprint_has_field(footprint, field_name):
     version = get_version()
@@ -83,7 +106,7 @@ def get_plot_plan(board, active_only=True):
 def get_layer_names(board, active_only=True):
     """Returns a list of (active) layer names of the current board"""
     plotPlan = get_plot_plan(board, active_only)
-    return [layer_info[0] for layer_info in plotPlan]
+    return [layer_info[2] for layer_info in plotPlan]
 
 def print_cli_progress_bar(percent, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
     """

@@ -47,6 +47,9 @@
 ☑ __压缩包文件名__：导出的Gerber压缩包名字。可以包含字符变量，例如`${TITLE}_${REVISION}`</br>
 
 ☑ __附加层__：要包含在 Gerber 存档中的附加层的逗号分隔列表。</br>
+☑ __导出所有活动层__：包含所有层，而不只是 JLCPCB 要求的常用层。</br>
+☑ __生成备份文件__：为生产文件生成备份 ZIP 压缩包（可取消勾选以禁用）。</br>
+☑ __生成后打开浏览器__：生成完成之后打开目录文件概览的网页浏览器。</br>
 ☑ __将 User.1 设置为 V-Cut 层__：在生产中将 User.1 层与 Edge-Cut 层合并。</br>
 ☑ __使用 User.2 作为替代 Edge-Cut 层__：在生产中使用 User.2 而不是 Edge-Cut 层作为电路板轮廓。如果您在生产过程中需要处理边缘或拼板，但仍希望保留单个轮廓用于原型设计、3D 模型导出或类似目的，这将非常有用。</br>
 ☑ __应用自动翻译__：为常见元器件应用已知的翻译修复。</br>
@@ -59,10 +62,10 @@
 <img src="./assets/mpn.png?raw=true">
 
 #### 主要字段：
-| 'LCSC Part #' | 'LCSC Part' | 'LCSC PN' | 'LCSC P/N' | 'LCSC Part No.' | 'JLCPCB Part #' | 'JLCPCB Part' | 'JLCPCB PN' | 'JLCPCB P/N' | 'JLCPCB Part No.' |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 'LCSC Part #' | 'LCSC Part' | 'LCSC PN' | 'LCSC P/N' | 'LCSC Part No.' | 'LCSC Part Number' | 'JLCPCB Part #' | 'JLCPCB Part' | 'JLCPCB PN' | 'JLCPCB P/N' | 'JLCPCB Part No.' | 'JLCPCB Part Number' |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
-_字段将按上述顺序查询。_
+_字段将按上述顺序查询。空字段会被跳过，例如当所有更靠前的字段缺失或为空时，带有值的 'MPN' 字段将被使用。_
 
 #### 备用字段：
 | 'LCSC' | 'JLC' | 'MPN' | 'Mpn' | 'mpn' |
@@ -207,6 +210,8 @@ python3 -m plugins.cli -h
   --allActiveLayers, -aaL                   导出所有活动层而不仅仅是常用层
   --archiveName NAME, -aN NAME              指定导出的Gerber压缩包名字
   --openBrowser, -b                         生成后打开带有目录文件概览的网页浏览器
+  --nonInteractive, -nI                     以非交互模式运行（适用于 CI/CD 环境）
+  --noBackup, -nB                           不生成备份文件
 ```
 
 
