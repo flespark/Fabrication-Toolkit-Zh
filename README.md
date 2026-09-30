@@ -6,6 +6,7 @@
 |:--------------------------:|
 
 [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/bennymeg)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/bennymeg/fabrication-toolkit/total)
 
 </div>
 
@@ -14,11 +15,12 @@
 此仓库为 [bennymeg/Fabrication-Toolkit: An JLC PCB Fabrication Plugin for KiCad](https://github.com/bennymeg/Fabrication-Toolkit) 的中文版本，方便国内的KiCad用户导出嘉立创要求的下单文件格式。包含以下修改：
 
 1. 导出的 BOM 文件改为国内下单要求的格式
-2. 文档翻译和更新
+2. 文档翻译和调整
 
 参考：
-[嘉立创PCB国际站下单资料要求](https://jlcpcb.com/help/article/How-to-generate-the-BOM-and-Centroid-file-from-KiCAD)
-[嘉立创PCB国内站下单资料要求](https://www.jlc.com/portal/server_guide_48022.html)
+
+- [嘉立创PCB国际站下单资料要求](https://jlcpcb.com/help/article/How-to-generate-the-BOM-and-Centroid-file-from-KiCAD)
+- [嘉立创PCB国内站下单资料要求](https://www.jlc.com/portal/server_guide_48022.html)
 
 ## 功能
 1. 生成符合生产要求格式的 Gerber 文件
@@ -32,9 +34,10 @@
 下载[最新版本](https://github.com/flespark/Fabrication-Toolkit-Zh/releases)的 ZIP 文件。从 KiCad 主窗口打开"扩展内容管理器"，并通过"从文件安装"安装 ZIP 文件。
 
 ## 使用方法
-在 KiCad PCB 编辑器（pcbnew）的顶部工具栏中点击制造工具包 <img src="./resources/icon.png?raw=true" style="margin-bottom: 8px;" alt="Logo" height=24> 按钮。
+在 KiCad PCB 编辑器（pcbnew）的顶部工具栏中点击制造工具包 <img src="./resources/icon.png?raw=true" style="margin-bottom: 8px;" alt="Logo" height=24> 按钮，选择所需选项并点击 'Generate'（生成）。
 
-**⊛** 每次更新后调用此插件前，请确保您已经在 PCB 编辑器中同步原理图的修改 [**F8**]。
+> [!IMPORTANT]  
+> 每次更新后调用此插件前，请确保您已经在 PCB 编辑器中同步原理图的修改 [**F8**]。
 
 **⊛** `User_1` 层在内部被定义为 **V-Cuts**（割板线）层，请避免将其用于其他用途（除非禁用）。<span style="text-color: light-grey !important;">_(自 v3.0.0 版本起)_</span>
 
@@ -45,16 +48,20 @@
 <img src="./assets/options.png?raw=true" height=275>
 
 ☑ __压缩包文件名__：导出的Gerber压缩包名字。可以包含字符变量，例如`${TITLE}_${REVISION}`</br>
-
 ☑ __附加层__：要包含在 Gerber 存档中的附加层的逗号分隔列表。</br>
 ☑ __导出所有活动层__：包含所有层，而不只是 JLCPCB 要求的常用层。</br>
-☑ __生成备份文件__：为生产文件生成备份 ZIP 压缩包（可取消勾选以禁用）。</br>
-☑ __生成后打开浏览器__：生成完成之后打开目录文件概览的网页浏览器。</br>
 ☑ __将 User.1 设置为 V-Cut 层__：在生产中将 User.1 层与 Edge-Cut 层合并。</br>
 ☑ __使用 User.2 作为替代 Edge-Cut 层__：在生产中使用 User.2 而不是 Edge-Cut 层作为电路板轮廓。如果您在生产过程中需要处理边缘或拼板，但仍希望保留单个轮廓用于原型设计、3D 模型导出或类似目的，这将非常有用。</br>
 ☑ __应用自动翻译__：为常见元器件应用已知的翻译修复。</br>
 ☑ __对所有区域应用自动填充__：在生成生产文件之前重新填充所有区域。</br>
 ☑ __从物料清单中移除 DNP 元器件__：从物料清单中移除已设置为 DNP（不安装）的元器件。</br>
+☑ __生成后打开浏览器__：生成完成之后打开目录文件概览的网页浏览器。</br>
+☑ __生成备份文件__：为生产文件生成备份 ZIP 压缩包（可取消勾选以禁用）。</br>
+
+## 属性
+
+> [!NOTE]  
+> 所有字段属性都需在原理图编辑器中输入，生成新的生产文件之前，请务必用原理图的修改更新您的 PCB [**F8**]，否则您的修改将不会被反映。
 
 ### ① 在生产文件中包含立创商城元器件编号
 在符号的字段属性中添加一个"LCSC Part #"字段，其中包含立创商城元器件编号。
@@ -95,6 +102,9 @@ KiCad 封装中的元器件旋转有时与 JLC 库中的方向不匹配，因为
 
 <img src="./assets/rotation.png?raw=true">
 
+> [!TIP]  
+> 嘉立创仿真图中单次按下方向键的偏移量为 0.0635mm（= 1/400 英寸）。
+
 由于旋转偏移是在原理图编辑器中输入的，请确保在生成新的生产文件之前，用原理图中的更改更新您的 PCB，否则您的更改将不会被反映。
 
 #### 主要字段：
@@ -112,9 +122,7 @@ _字段将按上述顺序查询。_
 ---
 
 ### ④ 偏移元器件位置
-KiCad 封装中的元器件位置有时与 JLC 库中的位置不匹配，因为 KiCad 和 JLCPCB 使用了同一标准的不同变体。对于例外情况：添加一个"FT Position Offset"*字段，其中包含逗号分隔的 x,y 位置偏移以进行修正。 根据 PCB 编辑器的元器件封装属性中的坐标方向，x,y 对应不同的偏移方向。当方向为0，即封装无旋转时，x,y 的正数数值分别对应向右和向上偏移。
-
-使用下表可以根据 KiCad PCB 编辑器的的元器件封装属性中的坐标方向，快速找出 x,y 正值对应在嘉立创 SMT 仿真图中的偏移方向：
+KiCad 封装中的元器件位置有时与 JLC 库中的位置不匹配，因为 KiCad 和 JLCPCB 使用了同一标准的不同变体。对于例外情况：添加一个"FT Position Offset"*字段，其中包含逗号分隔的 x,y 位置偏移以进行修正。 使用下表可以根据 KiCad PCB 编辑器状态栏中的封装旋转角度，快速确定基于 JLC 方向键点击所需的修正坐标：
 
 | KiCad 封装角度     | x      | y      |
 | ------------------ | ------ | ------ |
@@ -125,11 +133,10 @@ KiCad 封装中的元器件位置有时与 JLC 库中的位置不匹配，因为
 | 90 度，正面或背面  | 上偏移 | 左偏移 |
 | -90 度，正面或背面 | 下偏移 | 右偏移 |
 
-对于其他自定义角度，最好放置一个临时的直线符号来进行对齐。
-
-嘉立创 SMT 仿真图中选中元器件单次按下方向键的偏移量为 0.0635mm（= 1/400 英寸），所以可以先在仿真图选中器件后按方向键将元器件移动到正确位置，并根据按键次数算出合适的偏移修正值。
-
 <img src="./assets/position.png?raw=true">
+
+> [!TIP]  
+> 嘉立创仿真图中单次按下方向键的偏移量为 0.0635mm（= 1/400 英寸），可以先在仿真图选中器件后按方向键将元器件移动到正确位置，并根据按键次数算出合适的偏移修正值。
 
 由于位置偏移是在原理图编辑器中输入的，请确保在生成新的生产文件之前，用原理图中的更改更新您的 PCB，否则您的更改将不会被反映。
 
@@ -184,7 +191,7 @@ _字段将按上述顺序查询。_
 
 
 ## 命令行界面
-该插件也可以通过 Linux 命令行使用。如果您需要将插件嵌入到自动化流程或环境中，这将特别有用。
+该插件也可以通过 Linux 和 Windows 命令行使用。如果您需要将插件嵌入到自动化流程或环境中，这将特别有用。
 可以使用以下命令调用插件：
 ```
 python3 -m plugins.cli -p /myProject/myBoard.kicad_pcb
@@ -194,7 +201,7 @@ GUI 中的所有选项也可通过命令行界面使用：
 ```
 python3 -m plugins.cli -h
 
-用法: Fabrication Toolkit [-h] --path PATH [--additionalLayers LAYERS] [--user1VCut] [--user2AltVCut] [--autoTranslate] [--autoFill] [--excludeDNP] [--allActiveLayers] [--openBrowser]
+用法: Fabrication Toolkit [-h] --path PATH [--additionalLayers LAYERS] [--user1VCut] [--user2AltVCut] [--autoTranslate] [--autoFill] [--excludeDNP] [--allActiveLayers] [--archiveName NAME] [--openBrowser] [--nonInteractive] [--noBackup]
 
 从 KiCAD 电路板文件生成 JLCPCB 生产文件
 
@@ -213,6 +220,12 @@ python3 -m plugins.cli -h
   --nonInteractive, -nI                     以非交互模式运行（适用于 CI/CD 环境）
   --noBackup, -nB                           不生成备份文件
 ```
+
+### 备注
+
+- 在 Windows 上，命令需要在 `KiCad Command Prompt`（KiCad 命令提示符）中运行，并且把 `python3` 换成 `python`。
+- 如果要在已安装的插件中使用命令行，需要将 `plugins.cli` 替换为插件包名。在作业集（jobset）中看起来如下：
+  `python -m "${KICAD9_3RD_PARTY}plugins/com_github_bennymeg_JLC-Plugin-for-KiCad.cli" -p "${KIPRJMOD}/${PROJECTNAME}.kicad_pcb"`
 
 
 ## 作者
