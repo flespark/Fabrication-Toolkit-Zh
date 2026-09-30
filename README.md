@@ -16,6 +16,10 @@
 1. 导出的 BOM 文件改为国内下单要求的格式
 2. 文档翻译和更新
 
+参考：
+[嘉立创PCB国际站下单资料要求](https://jlcpcb.com/help/article/How-to-generate-the-BOM-and-Centroid-file-from-KiCAD)
+[嘉立创PCB国内站下单资料要求](https://www.jlc.com/portal/server_guide_48022.html)
+
 ## 功能
 1. 生成符合生产要求格式的 Gerber 文件
 2. 生成符合生产要求格式的 BOM 文件
